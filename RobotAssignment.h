@@ -16,18 +16,18 @@ struct Robot
     int assignedTaskCount;
 };
 
-struct TaskAssignment
+struct AssignmentRecord
 {
     int taskId;
     char taskName[50];
     int robotId;
     char robotName[30];
-    bool active;
+    bool isActive;
 };
 
 struct CircularRobotQueue
 {
-    int robotIndexes[20];
+    int robotPositions[20];
     int front;
     int rear;
     int count;
@@ -40,15 +40,15 @@ private:
     static const int MAX_ASSIGNMENTS = 100;
 
     Robot robots[MAX_ROBOTS];
-    TaskAssignment assignments[MAX_ASSIGNMENTS];
+    AssignmentRecord assignments[MAX_ASSIGNMENTS];
     CircularRobotQueue robotQueue;
     int robotCount;
     int assignmentCount;
 
     void copyText(char destination[], const char source[], int size);
     void initializeQueue();
-    bool enqueueRobot(int robotIndex);
-    bool dequeueRobot(int& robotIndex);
+    bool enqueueRobot(int robotPosition);
+    bool dequeueRobot(int& robotPosition);
     int findRobotPosition(int robotId) const;
     const char* getStatusText(RobotStatus status) const;
 

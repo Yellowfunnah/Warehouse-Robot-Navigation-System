@@ -33,7 +33,7 @@ void RobotAssignmentModule::initializeQueue()
     robotQueue.count = 0;
 }
 
-bool RobotAssignmentModule::enqueueRobot(int robotIndex)
+bool RobotAssignmentModule::enqueueRobot(int robotPosition)
 {
     if (robotQueue.count == MAX_ROBOTS)
     {
@@ -41,19 +41,19 @@ bool RobotAssignmentModule::enqueueRobot(int robotIndex)
     }
 
     robotQueue.rear = (robotQueue.rear + 1) % MAX_ROBOTS;
-    robotQueue.robotIndexes[robotQueue.rear] = robotIndex;
+    robotQueue.robotPositions[robotQueue.rear] = robotPosition;
     robotQueue.count++;
     return true;
 }
 
-bool RobotAssignmentModule::dequeueRobot(int& robotIndex)
+bool RobotAssignmentModule::dequeueRobot(int& robotPosition)
 {
     if (robotQueue.count == 0)
     {
         return false;
     }
 
-    robotIndex = robotQueue.robotIndexes[robotQueue.front];
+    robotPosition = robotQueue.robotPositions[robotQueue.front];
     robotQueue.front = (robotQueue.front + 1) % MAX_ROBOTS;
     robotQueue.count--;
     return true;
@@ -106,14 +106,14 @@ bool RobotAssignmentModule::addRobot(int robotId, const char robotName[])
 
 bool RobotAssignmentModule::setRobotStatus(int robotId, RobotStatus status)
 {
-    int robotIndex = findRobotPosition(robotId);
+    int robotPosition = findRobotPosition(robotId);
 
-    if (robotIndex == -1)
+    if (robotPosition == -1)
     {
         return false;
     }
 
-    robots[robotIndex].status = status;
+    robots[robotPosition].status = status;
     return true;
 }
 
@@ -124,25 +124,25 @@ bool RobotAssignmentModule::assignTask(int taskId, const char taskName[])
         return false;
     }
 
-    int checkedRobots = robotQueue.count;
+    int robotsChecked = robotQueue.count;
 
-    // Check each robot once, rotating the queue as we go.
-    for (int i = 0; i < checkedRobots; i++)
+    // Check each robot once while keeping the queue rotating.
+    for (int i = 0; i < robotsChecked; i++)
     {
-        int robotIndex;
-        dequeueRobot(robotIndex);
-        enqueueRobot(robotIndex);
+        int robotPosition;
+        dequeueRobot(robotPosition);
+        enqueueRobot(robotPosition);
 
-        if (robots[robotIndex].status == Available)
+        if (robots[robotPosition].status == Available)
         {
             assignments[assignmentCount].taskId = taskId;
             copyText(assignments[assignmentCount].taskName, taskName, 50);
-            assignments[assignmentCount].robotId = robots[robotIndex].robotId;
-            copyText(assignments[assignmentCount].robotName, robots[robotIndex].robotName, 30);
-            assignments[assignmentCount].active = true;
+            assignments[assignmentCount].robotId = robots[robotPosition].robotId;
+            copyText(assignments[assignmentCount].robotName, robots[robotPosition].robotName, 30);
+            assignments[assignmentCount].isActive = true;
 
-            robots[robotIndex].status = Busy;
-            robots[robotIndex].assignedTaskCount++;
+            robots[robotPosition].status = Busy;
+            robots[robotPosition].assignedTaskCount++;
             assignmentCount++;
             return true;
         }
@@ -155,14 +155,14 @@ bool RobotAssignmentModule::completeTask(int taskId)
 {
     for (int i = 0; i < assignmentCount; i++)
     {
-        if (assignments[i].taskId == taskId && assignments[i].active)
+        if (assignments[i].taskId == taskId && assignments[i].isActive)
         {
-            int robotIndex = findRobotPosition(assignments[i].robotId);
-            assignments[i].active = false;
+            int robotPosition = findRobotPosition(assignments[i].robotId);
+            assignments[i].isActive = false;
 
-            if (robotIndex != -1 && robots[robotIndex].status == Busy)
+            if (robotPosition != -1 && robots[robotPosition].status == Busy)
             {
-                robots[robotIndex].status = Available;
+                robots[robotPosition].status = Available;
             }
 
             return true;
@@ -177,11 +177,32 @@ void RobotAssignmentModule::displayAssignmentList() const
     cout << "\nRobot Assignment List\n";
     cout << "---------------------\n";
 
-    if (robotCount == 0)
+    if (assignmentCount == 0)
     {
-        cout << "No robots added.\n";
+        cout << "No task assignments recorded.\n";
         return;
     }
+
+    cout << "Task ID | Task Name | Robot ID | Robot Name | Status\n";
+
+    for (int i = 0; i < assignmentCount; i++)
+    {
+        cout << assignments[i].taskId << " | "
+            << assignments[i].taskName << " | "
+            << assignments[i].robotId << " | "
+            << assignments[i].robotName << " | ";
+
+        if (assignments[i].isActive)
+        {
+            cout << "Active\n";
+        }
+        else
+        {
+            cout << "Completed\n";
+        }
+    }
+
+    cout << "\nRobot Workload Summary\n";
 
     for (int i = 0; i < robotCount; i++)
     {
@@ -199,7 +220,7 @@ void RobotAssignmentModule::displayCurrentRobotHandlingEachTask() const
 
     for (int i = 0; i < assignmentCount; i++)
     {
-        if (assignments[i].active)
+        if (assignments[i].isActive)
         {
             cout << "Task " << assignments[i].taskId << " (" << assignments[i].taskName
                 << ") -> Robot " << assignments[i].robotId << " - "
