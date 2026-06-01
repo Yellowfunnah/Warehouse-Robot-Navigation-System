@@ -139,7 +139,21 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Warehouse_Robot_System.cpp" />
+    <ClCompile Include="ItemManagement.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="NavigationStack.cpp" />
+    <ClCompile Include="OrderManagement.cpp" />
+    <ClCompile Include="RobotAssignment.cpp" />
+    <ClCompile Include="RobotNavigation.cpp" />
+    <ClCompile Include="WarehouseLayout.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ItemManagement.h" />
+    <ClInclude Include="NavigationStack.h" />
+    <ClInclude Include="OrderManagement.h" />
+    <ClInclude Include="RobotAssignment.h" />
+    <ClInclude Include="RobotNavigation.h" />
+    <ClInclude Include="WarehouseLayout.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
