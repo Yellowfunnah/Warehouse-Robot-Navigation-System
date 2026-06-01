@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ItemManagement.h" />
+    <ClInclude Include="MovementNode.h" />
     <ClInclude Include="NavigationStack.h" />
     <ClInclude Include="OrderManagement.h" />
     <ClInclude Include="RobotAssignment.h" />
