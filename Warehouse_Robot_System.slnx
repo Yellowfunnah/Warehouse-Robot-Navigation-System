@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Warehouse_Robot_System.vcxproj" Id="5c158eae-589c-435a-8e9c-bf6ac53006ea" />
+</Solution>
