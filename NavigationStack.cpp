@@ -5,6 +5,14 @@ NavigationStack::NavigationStack()
     top = nullptr;
 }
 
+NavigationStack::~NavigationStack()
+{
+    while (!isEmpty())
+    {
+        pop();
+    }
+}
+
 bool NavigationStack::isEmpty()
 {
     return top == nullptr;
@@ -12,8 +20,9 @@ bool NavigationStack::isEmpty()
 
 void NavigationStack::push(string move)
 {
-    MovementNode* newNode = new MovementNode(move);
+    MovementNode* newNode = new MovementNode;
 
+    newNode->direction = move;
     newNode->next = top;
 
     top = newNode;

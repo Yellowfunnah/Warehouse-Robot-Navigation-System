@@ -2,9 +2,14 @@
 
 #include <iostream>
 #include <string>
-#include "MovementNode.h"
 
 using namespace std;
+
+struct MovementNode
+{
+    string direction;
+    MovementNode* next;
+};
 
 class NavigationStack
 {
@@ -14,13 +19,15 @@ private:
 public:
     NavigationStack();
 
-    void push(string move);
+    ~NavigationStack();
+
+    void push(string direction);
 
     string pop();
 
-    string peek();
-
     bool isEmpty();
+
+    string peek();
 
     void display();
 };

@@ -11,7 +11,14 @@ class RobotNavigation
 private:
     NavigationStack pathStack;
 
+    string navigationLog[100];
+    int logCount;
+
+    int movementCount;
+
 public:
+    RobotNavigation();
+
     void moveForward();
 
     void moveLeft();
@@ -23,4 +30,13 @@ public:
     void returnToStart();
 
     void simulateObstacle();
+
+    void viewNavigationLog();
+
+    void viewLatestMovement();
+
+    void viewMovementCount();
 };
+
+// Menu Function
+void robotNavigationMenu();
