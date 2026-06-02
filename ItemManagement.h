@@ -27,6 +27,8 @@ private:
 public:
     ItemManagement();
 
+    bool idExists(string id);
+
     void insertItem(string id, string name, string location);
     void searchItem(string id);
     void updateItem(string id, string newName, string newLocation);

@@ -211,10 +211,18 @@ void itemManagementMenu()
             cout << "Enter Item ID: ";
             cin >> id;
 
-            cout << "Enter Item Name: ";
-            cin >> name;
+            // Check duplicate first
+            if (itemManager.idExists(id))
+            {
+                cout << "Item ID already exists. Insertion failed.\n";
+                break;
+            }
 
             cin.ignore();
+
+            cout << "Enter Item Name: ";
+            getline(cin, name);
+
             cout << "Enter Item Location: ";
             getline(cin, location);
 

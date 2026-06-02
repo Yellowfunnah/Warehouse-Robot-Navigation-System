@@ -5,6 +5,11 @@ ItemManagement::ItemManagement()
     root = nullptr;
 }
 
+bool ItemManagement::idExists(string id)
+{
+    return search(root, id) != nullptr;
+}
+
 ItemNode* ItemManagement::insert(ItemNode* node, string id, string name, string location)
 {
     if (node == nullptr)
@@ -30,6 +35,12 @@ ItemNode* ItemManagement::insert(ItemNode* node, string id, string name, string 
 
 void ItemManagement::insertItem(string id, string name, string location)
 {
+    if (search(root, id) != nullptr)
+    {
+        cout << "Item ID already exists.\n";
+        return;
+    }
+
     root = insert(root, id, name, location);
     cout << "Item inserted successfully.\n";
 }
