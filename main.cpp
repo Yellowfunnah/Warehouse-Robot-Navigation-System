@@ -1,5 +1,6 @@
 #include <iostream>
 #include "RobotNavigation.h"
+#include "OrderManagement.h"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ int main()
         switch (choice)
         {
         case 1:
-            cout << "\nOrder Management Module Not Implemented Yet." << endl;
+            orderManagementMenu();
             break;
 
         case 2:
