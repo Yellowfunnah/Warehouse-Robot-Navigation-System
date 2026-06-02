@@ -2,12 +2,14 @@
 #include "RobotNavigation.h"
 #include "OrderManagement.h"
 #include "RobotAssignment.h"
+#include "WarehouseLayout.h"
 
 using namespace std;
 
 // Function Prototype
 void robotAssignmentMenu();
 void robotNavigationMenu();
+void warehouseLayoutMenu();
 
 int main()
 {
@@ -47,7 +49,7 @@ int main()
             break;
 
         case 5:
-            cout << "\nWarehouse Layout Module Not Implemented Yet." << endl;
+            warehouseLayoutMenu();
             break;
 
         case 0:
@@ -65,50 +67,106 @@ int main()
 
 void robotNavigationMenu()
 {
-    RobotNavigation robot;
+    static RobotNavigation robot;
 
     int choice;
+    int movementChoice;
 
     do
     {
         cout << "\n=================================" << endl;
         cout << " ROBOT NAVIGATION MODULE" << endl;
         cout << "=================================" << endl;
-        cout << "1. Move Forward" << endl;
-        cout << "2. Move Left" << endl;
-        cout << "3. Move Right" << endl;
-        cout << "4. Display Path" << endl;
-        cout << "5. Return To Start" << endl;
-        cout << "6. Simulate Obstacle" << endl;
-        cout << "0. Back to Main Menu" << endl;
+        cout << "1. Start Navigation" << endl;
+        cout << "2. Display Current Path" << endl;
+        cout << "3. Return To Start" << endl;
+        cout << "4. View Navigation Log" << endl;
+        cout << "5. View Latest Movement" << endl;
+        cout << "6. View Total Movements" << endl;
+        cout << "0. Back To Main Menu" << endl;
         cout << "=================================" << endl;
         cout << "Enter Choice: ";
-        cin >> choice;
 
+        while (!(cin >> choice))
+        {
+            cout << "Invalid input! Please enter a number: ";
+
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
         switch (choice)
         {
         case 1:
-            robot.moveForward();
+
+            do
+            {
+                cout << "\n=================================" << endl;
+                cout << " MOVEMENT CONTROL" << endl;
+                cout << "=================================" << endl;
+                cout << "1. Move Forward" << endl;
+                cout << "2. Move Left" << endl;
+                cout << "3. Move Right" << endl;
+                cout << "4. Obstacle Detected" << endl;
+                cout << "0. Finish Navigation" << endl;
+                cout << "=================================" << endl;
+                cout << "Enter Choice: ";
+
+                while (!(cin >> movementChoice))
+                {
+                    cout << "Invalid input! Please enter a number: ";
+
+                    cin.clear();
+                    cin.ignore(1000, '\n');
+                }
+
+                switch (movementChoice)
+                {
+                case 1:
+                    robot.moveForward();
+                    break;
+
+                case 2:
+                    robot.moveLeft();
+                    break;
+
+                case 3:
+                    robot.moveRight();
+                    break;
+
+                case 4:
+                    robot.simulateObstacle();
+                    break;
+
+                case 0:
+                    cout << "\nNavigation Session Completed." << endl;
+                    break;
+
+                default:
+                    cout << "\nInvalid Choice!" << endl;
+                }
+
+            } while (movementChoice != 0);
+
             break;
 
         case 2:
-            robot.moveLeft();
-            break;
-
-        case 3:
-            robot.moveRight();
-            break;
-
-        case 4:
             robot.displayPath();
             break;
 
-        case 5:
+        case 3:
             robot.returnToStart();
             break;
 
+        case 4:
+            robot.viewNavigationLog();
+            break;
+
+        case 5:
+            robot.viewLatestMovement();
+            break;
+
         case 6:
-            robot.simulateObstacle();
+            robot.viewMovementCount();
             break;
 
         case 0:
@@ -120,4 +178,74 @@ void robotNavigationMenu()
         }
 
     } while (choice != 0);
+}
+
+void warehouseLayoutMenu()
+{
+    WarehouseLayout warehouse;
+    warehouse.buildSampleLayout(); // load the preset layout on entry
+
+    int choice;
+
+    do
+    {
+        cout << "\n=================================" << endl;
+        cout << " WAREHOUSE LAYOUT MODULE" << endl;
+        cout << "=================================" << endl;
+        cout << "1. Display Warehouse Layout" << endl;
+        cout << "2. Add Zone" << endl;
+        cout << "3. Add Aisle" << endl;
+        cout << "4. Add Shelf" << endl;
+        cout << "5. Search Location" << endl;
+        cout << "6. Show Path to Location" << endl;
+        cout << "7. Traverse Entire Warehouse" << endl;
+        cout << "0. Back to Main Menu" << endl;
+        cout << "=================================" << endl;
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            warehouse.displayLayout();
+            break;
+
+        case 2:
+            warehouse.addZone();
+            break;
+
+        case 3:
+            warehouse.addAisle();
+            break;
+
+        case 4:
+            warehouse.addShelf();
+            break;
+
+        case 5:
+            warehouse.searchLocation();
+            break;
+
+        case 6:
+            warehouse.showPathToLocation();
+            break;
+
+        case 7:
+            warehouse.traverseWarehouse();
+            break;
+
+        case 0:
+            cout << "\nReturning to Main Menu..." << endl;
+            break;
+
+        default:
+            cout << "\nInvalid Choice!" << endl;
+        }
+
+    } while (choice != 0);
+}
+
+void robotAssignmentMenu()
+{
+    cout << "\nRobot Assignment Module Not Implemented Yet." << endl;
 }
