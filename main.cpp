@@ -2,6 +2,7 @@
 #include "RobotNavigation.h"
 #include "OrderManagement.h"
 #include "RobotAssignment.h"
+#include "ItemManagement.h"
 #include "WarehouseLayout.h"
 
 using namespace std;
@@ -9,6 +10,7 @@ using namespace std;
 // Function Prototype
 void robotAssignmentMenu();
 void robotNavigationMenu();
+void itemManagementMenu();
 void warehouseLayoutMenu();
 
 int main()
@@ -45,7 +47,7 @@ int main()
             break;
 
         case 4:
-            cout << "\nItem Management Module Not Implemented Yet." << endl;
+            itemManagementMenu();
             break;
 
         case 5:
@@ -167,6 +169,102 @@ void robotNavigationMenu()
 
         case 6:
             robot.viewMovementCount();
+            break;
+
+        case 0:
+            cout << "\nReturning to Main Menu..." << endl;
+            break;
+
+        default:
+            cout << "\nInvalid Choice!" << endl;
+        }
+
+    } while (choice != 0);
+}
+
+void itemManagementMenu()
+{
+    ItemManagement itemManager;
+    int choice;
+
+    do
+    {
+        cout << "\n=================================" << endl;
+        cout << " ITEM SEARCH & MANAGEMENT MODULE" << endl;
+        cout << "=================================" << endl;
+        cout << "1. Insert Item" << endl;
+        cout << "2. Search Item" << endl;
+        cout << "3. Update Item" << endl;
+        cout << "4. Delete Item" << endl;
+        cout << "5. Display All Items" << endl;
+        cout << "0. Back to Main Menu" << endl;
+        cout << "=================================" << endl;
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+        {
+            string id, name, location;
+
+            cout << "Enter Item ID: ";
+            cin >> id;
+
+            cout << "Enter Item Name: ";
+            cin >> name;
+
+            cin.ignore();
+            cout << "Enter Item Location: ";
+            getline(cin, location);
+
+            itemManager.insertItem(id, name, location);
+            break;
+        }
+
+        case 2:
+        {
+            string id;
+
+            cout << "Enter Item ID to search: ";
+            cin >> id;
+
+            itemManager.searchItem(id);
+            break;
+        }
+
+        case 3:
+        {
+            string id, newName, newLocation;
+
+            cout << "Enter Item ID to update: ";
+            cin >> id;
+
+            cin.ignore();
+
+            cout << "Enter New Item Name: ";
+            getline(cin, newName);
+
+            cout << "Enter New Location: ";
+            getline(cin, newLocation);
+
+            itemManager.updateItem(id, newName, newLocation);
+            break;
+        }
+
+        case 4:
+        {
+            string id;
+
+            cout << "Enter Item ID to delete: ";
+            cin >> id;
+
+            itemManager.deleteItem(id);
+            break;
+        }
+
+        case 5:
+            itemManager.displayItems();
             break;
 
         case 0:
