@@ -1,4 +1,5 @@
 #include "ItemManagement.h"
+#include <iomanip>
 
 ItemManagement::ItemManagement()
 {
@@ -8,6 +9,21 @@ ItemManagement::ItemManagement()
 bool ItemManagement::idExists(string id)
 {
     return search(root, id) != nullptr;
+}
+
+int ItemManagement::countNodes(ItemNode* node)
+{
+    if (node == nullptr)
+        return 0;
+
+    return 1 +
+        countNodes(node->left) +
+        countNodes(node->right);
+}
+
+int ItemManagement::getTotalItems()
+{
+    return countNodes(root);
 }
 
 ItemNode* ItemManagement::insert(ItemNode* node, string id, string name, string location)
@@ -66,10 +82,13 @@ void ItemManagement::searchItem(string id)
     }
     else
     {
-        cout << "\nItem Found\n";
+        cout << "\n=================================\n";
+        cout << "          ITEM FOUND\n";
+        cout << "=================================\n";
         cout << "Item ID   : " << result->itemID << endl;
         cout << "Item Name : " << result->itemName << endl;
         cout << "Location  : " << result->location << endl;
+        cout << "=================================\n";
     }
 }
 
@@ -150,9 +169,11 @@ void ItemManagement::displayInOrder(ItemNode* node)
 
     displayInOrder(node->left);
 
-    cout << "ID: " << node->itemID
-        << " | Name: " << node->itemName
-        << " | Location: " << node->location << endl;
+    cout << left
+        << setw(12) << node->itemID
+        << setw(20) << node->itemName
+        << setw(25) << node->location
+        << endl;
 
     displayInOrder(node->right);
 }
@@ -165,6 +186,22 @@ void ItemManagement::displayItems()
         return;
     }
 
-    cout << "\nItems in Sorted Order:\n";
+    cout << "\n=========================================================\n";
+    cout << "                ITEM INVENTORY LIST\n";
+    cout << "=========================================================\n";
+
+    cout << left
+        << setw(12) << "Item ID"
+        << setw(20) << "Item Name"
+        << setw(25) << "Location"
+        << endl;
+
+    cout << "---------------------------------------------------------\n";
+
     displayInOrder(root);
+
+    cout << "=========================================================\n";
+    cout << "Total Items: " << getTotalItems() << endl;
+    cout << "Display Order: Binary Search Tree (Inorder Traversal)\n";
+    cout << "=========================================================\n";
 }

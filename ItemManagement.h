@@ -16,6 +16,7 @@ struct ItemNode
 class ItemManagement
 {
 private:
+    int countNodes(ItemNode* node);
     ItemNode* root;
 
     ItemNode* insert(ItemNode* node, string id, string name, string location);
@@ -25,6 +26,7 @@ private:
     void displayInOrder(ItemNode* node);
 
 public:
+    int getTotalItems();
     ItemManagement();
 
     bool idExists(string id);

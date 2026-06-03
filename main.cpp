@@ -185,6 +185,11 @@ void robotNavigationMenu()
 void itemManagementMenu()
 {
     ItemManagement itemManager;
+
+    itemManager.insertItem("I001", "Mouse", "Zone A Shelf 5");
+    itemManager.insertItem("I002", "Monitor", "Zone B Shelf 2");
+    itemManager.insertItem("I003", "Keyboard", "Zone C Shelf 1");
+
     int choice;
 
     do
