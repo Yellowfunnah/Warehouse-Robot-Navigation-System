@@ -1,3 +1,6 @@
+// Task 4 - Item Search and Management Module
+// Aimen Rizwan - TP085047
+
 #include "ItemManagement.h"
 #include <iomanip>
 
