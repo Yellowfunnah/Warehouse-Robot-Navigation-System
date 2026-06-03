@@ -104,7 +104,7 @@ void ItemManagement::updateItem(string id, string newName, string newLocation)
     {
         result->itemName = newName;
         result->location = newLocation;
-        cout << "Item updated successfully.\n";
+        cout << "Item " << id << " updated successfully.\n";
     }
 }
 
@@ -159,7 +159,7 @@ void ItemManagement::deleteItem(string id)
     }
 
     root = deleteNode(root, id);
-    cout << "Item deleted successfully.\n";
+    cout << "Item " << id << " deleted successfully.\n";
 }
 
 void ItemManagement::displayInOrder(ItemNode* node)
@@ -182,7 +182,9 @@ void ItemManagement::displayItems()
 {
     if (root == nullptr)
     {
-        cout << "No items available.\n";
+cout << "\n=================================\n";
+cout << "     NO ITEMS IN INVENTORY\n";
+cout << "=================================\n";
         return;
     }
 

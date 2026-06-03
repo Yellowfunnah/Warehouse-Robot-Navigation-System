@@ -9,8 +9,8 @@ struct ItemNode
     string itemName;
     string location;
 
-    ItemNode* left;
-    ItemNode* right;
+    ItemNode* left = nullptr;
+    ItemNode* right = nullptr;
 };
 
 class ItemManagement

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cctype>
 #include "RobotNavigation.h"
 #include "OrderManagement.h"
 #include "RobotAssignment.h"
@@ -12,6 +13,8 @@ void robotAssignmentMenu();
 void robotNavigationMenu();
 void itemManagementMenu();
 void warehouseLayoutMenu();
+bool isValidItemID(string id);
+bool isValidLocation(string location);
 
 int main()
 {
@@ -186,10 +189,6 @@ void itemManagementMenu()
 {
     ItemManagement itemManager;
 
-    itemManager.insertItem("I001", "Mouse", "Zone A Shelf 5");
-    itemManager.insertItem("I002", "Monitor", "Zone B Shelf 2");
-    itemManager.insertItem("I003", "Keyboard", "Zone C Shelf 1");
-
     int choice;
 
     do
@@ -216,10 +215,16 @@ void itemManagementMenu()
             cout << "Enter Item ID: ";
             cin >> id;
 
+            if (!isValidItemID(id))
+            {
+                cout << "Invalid Item ID. Please enter a valid ID (e.g., I001).\n";
+                break;
+            }
+
             // Check duplicate first
             if (itemManager.idExists(id))
             {
-                cout << "Item ID already exists. Insertion failed.\n";
+                cout << "Item ID already exists. Please enter a unique Item ID.\n";
                 break;
             }
 
@@ -230,6 +235,18 @@ void itemManagementMenu()
 
             cout << "Enter Item Location: ";
             getline(cin, location);
+
+            if (name.empty() || location.empty())
+            {
+                cout << "Item name and location cannot be empty.\n";
+                break;
+            }
+
+            if (!isValidLocation(location))
+            {
+                cout << "Invalid location. Please enter a valid location (e.g., Zone A Shelf 5).\n";
+                break;
+            }
 
             itemManager.insertItem(id, name, location);
             break;
@@ -242,6 +259,12 @@ void itemManagementMenu()
             cout << "Enter Item ID to search: ";
             cin >> id;
 
+            if (!isValidItemID(id))
+            {
+                cout << "Invalid Item ID. Please enter a valid ID (e.g., I001).\n";
+                break;
+            }
+
             itemManager.searchItem(id);
             break;
         }
@@ -253,6 +276,18 @@ void itemManagementMenu()
             cout << "Enter Item ID to update: ";
             cin >> id;
 
+            if (!isValidItemID(id))
+            {
+                cout << "Invalid Item ID. Please enter a valid ID (e.g., I001).\n";
+                break;
+            }
+
+            if (!itemManager.idExists(id))
+            {
+                cout << "Update failed. Item ID does not exist.\n";
+                break;
+            }
+
             cin.ignore();
 
             cout << "Enter New Item Name: ";
@@ -260,6 +295,18 @@ void itemManagementMenu()
 
             cout << "Enter New Location: ";
             getline(cin, newLocation);
+
+            if (newName.empty() || newLocation.empty())
+            {
+                cout << "Item name and location cannot be empty.\n";
+                break;
+            }
+
+            if (!isValidLocation(newLocation))
+            {
+                cout << "Invalid location. Use format like Zone A Shelf 5.\n";
+                break;
+            }
 
             itemManager.updateItem(id, newName, newLocation);
             break;
@@ -271,6 +318,18 @@ void itemManagementMenu()
 
             cout << "Enter Item ID to delete: ";
             cin >> id;
+
+            if (!isValidItemID(id))
+            {
+                cout << "Invalid Item ID. Please enter a valid ID (e.g., I001).\n";
+                break;
+            }
+
+            if (!itemManager.idExists(id))
+            {
+                cout << "Delete failed. Item ID does not exist.\n";
+                break;
+            }
 
             itemManager.deleteItem(id);
             break;
@@ -359,4 +418,32 @@ void warehouseLayoutMenu()
 void robotAssignmentMenu()
 {
     cout << "\nRobot Assignment Module Not Implemented Yet." << endl;
+}
+
+bool isValidItemID(string id)
+{
+    if (id.length() != 4)
+        return false;
+
+    if (id[0] != 'I')
+        return false;
+
+    for (int i = 1; i < 4; i++)
+    {
+        if (!isdigit(id[i]))
+            return false;
+    }
+
+    return true;
+}
+
+bool isValidLocation(string location)
+{
+    if (location.find("Zone") == string::npos)
+        return false;
+
+    if (location.find("Shelf") == string::npos)
+        return false;
+
+    return true;
 }
